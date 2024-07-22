@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"> <!--기본언어설정-->
+    <head>
+        <meta charset="UTF-8" /> <!--utf-8=문자 인코딩-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="CSS.css" />
+        <title>시간표</title>
+        <link rel="icon" href="C:\Users\zag12\Downloads\568wgldl.png"/>
+
+        <style>
+            * {
+                box-sizing: border-box; /* 박스 크기 계산을 쉽게 하기 위해서 border-box를 적용했다. */
+            }
+
+            body {
+                margin: 0;
+                font-family: sans-serif;  /*폰트 적용*/
+            }
+
+            header .container {   
+                width: 1180px;
+                height: 80px;
+                font-size: 40px;
+                margin: auto;   /*가운데 정렬*/
+                border-bottom: solid 1px grey; /* 아래쪽 회색 실선 */
+            }
+
+            .container .logo {
+                height: 80px;
+                display: flex; /*로고와 텍스트 수평 정렬*/
+                align-items: center;
+                margin-left: 25px; /*여백 설정*/
+            } 
+
+            .container .logo img {
+                height: 70px;
+                margin-top: 5px;
+                object-fit: cover; /*이미지 부모 요소 크기에 맞게*/
+                margin-right: 10px;
+            }
+
+            .container .logo p {
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+ 
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <img src="C:\Users\zag12\Downloads\568wgldl.png" />
+                    <p>
+                        <span>시간표</span>
+                    </p>
+                </div>
+
+           </div>
+        </header>
+    </body>
+</html>

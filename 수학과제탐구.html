@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS.css" />
+    <title>강의후기(수학과제탐구)</title>
+    <link rel="icon" href="C:\Users\zag12\Downloads\568wgldl.png"/>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .board-container {
+            width: 400px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .board-container h1 {
+            text-align: center;
+            color: #4400d6;
+        }
+        .new-post {
+            margin-bottom: 20px;
+        }
+        .new-post textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .new-post button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3273dc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .post {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+        .post-id {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .post-content {
+            margin: 10px 0;
+        }
+        .post-date {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="board-container">
+        <h1>수학과제탐구</h1>
+        <div class="new-post">
+            <textarea id="postContent" placeholder="과목과 관련해서 글을 작성해주세요(담당선생님,비속어 등은 제외)"></textarea>
+            <button onclick="addPost()">완료</button>
+        </div>
+        <div id="posts">
+            <!-- 기존 게시글이 여기에 추가됩니다 -->
+        </div>
+    </div>
+    <script>
+         // 현재 페이지의 고유한 식별자를 생성
+        const pageKey = window.location.pathname;
+
+        // 로컬 스토리지에서 게시글 불러오기
+        window.onload = function() {
+            loadPosts();
+        }
+
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem(pageKey)) || [];
+            posts.forEach(post => {
+                const postHTML = createPostHTML(post.id, post.content, post.date);
+                document.getElementById('posts').insertAdjacentHTML('beforeend', postHTML);
+            });
+        }
+
+        function createPostHTML(postId, postContent, postDate) {
+            return `
+                <div class="post" id="${postId}">
+                    <div class="post-id">${postId}</div>
+                    <div class="post-content">${postContent}</div>
+                    <div class="post-date">${postDate}</div>
+                    <button class="delete-btn" onclick="deletePost('${postId}')">삭제</button>
+                </div>
+            `;
+        }
+
+        function addPost() {
+            const postContent = document.getElementById('postContent').value;
+            if (postContent.trim() === "") {
+                alert("내용을 입력하세요.");
+                return;
+            }
+            const postId = Math.random().toString(36).substr(2, 9);
+            const postDate = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+            const postHTML = createPostHTML(postId, postContent, postDate);
+
+            document.getElementById('posts').insertAdjacentHTML('afterbegin', postHTML);
+            document.getElementById('postContent').value = '';
+
+            savePost({ id: postId, content: postContent, date: postDate });
+        }
+
+        function savePost(post) {
+            const posts = JSON.parse(localStorage.getItem(pageKey)) || [];
+            posts.unshift(post);
+            localStorage.setItem(pageKey, JSON.stringify(posts));
+        }
+
+        function deletePost(postId) {
+            let posts = JSON.parse(localStorage.getItem(pageKey)) || [];
+            posts = posts.filter(post => post.id !== postId);
+            localStorage.setItem(pageKey, JSON.stringify(posts));
+
+            document.getElementById(postId).remove();
+        }
+    </script>
+</body>
+</html>
